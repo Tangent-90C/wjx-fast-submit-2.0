@@ -45,6 +45,7 @@ class WenJuanXing:
             'User-Agent': 'Mozilla/5.0 (Linux; U; Android 4.3; zh-cn; YL-Coolpad 5892_C00 Build/JLS36C) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30',
             'X-Forwarded-For': ip,
             'Cookie': 'jcn{}={}'.format(self.wj_id, quote(your_name, safe=";/?:@&=+$,", encoding="utf-8"))
+            # 你的名字是用Cookie传上去的，如果没有这个Cookie，你就变成了匿名用户
         }
 
     def get_ktimes(self):
