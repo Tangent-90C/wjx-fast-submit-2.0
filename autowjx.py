@@ -25,11 +25,8 @@ class WenJuanXing:
         这个函数中生成问卷的结果，可根据问卷结果，随机生成答案
         :return:
         """
-        # 改掉这里的数据
-        self.data = {
-            'submitdata': '1$红花会帮主}2$3}3$1|2}4$1}5$1}6$1^1}7$1}8$1'
 
-        }
+        self.data = submit_data
 
     def set_header(self):
         """
@@ -115,14 +112,15 @@ class WenJuanXing:
         :param response: 访问问卷网页，返回的reaponse
         :return: 找到的starttime
         """
-        #start_time = re.search(r'\d+?/\d+?/\d+?\s\d+?:\d{2}', response.text) #原来获取到的开始时间是不带最后的秒数的
-        
-        start_time = re.search(r'\d+?/\d+?/\d+?\s\d+?:\d{2}:\d{2}', response.text) #这个是带最后的秒数的
-        time.sleep(1) # 等待一小会再提交，减少出验证码的概率
+        # start_time = re.search(r'\d+?/\d+?/\d+?\s\d+?:\d{2}', response.text) #原来获取到的开始时间是不带最后的秒数的
 
-        #用电脑本地时间获取starttime
-        #因为部分人的电脑时间和标准的北京时间差的太大了，原本的2秒交卷变成了1分钟交卷，所以放弃了这段代码
-        #a = datetime.datetime.now() + datetime.timedelta(seconds=-5) 
+        start_time = re.search(
+            r'\d+?/\d+?/\d+?\s\d+?:\d{2}:\d{2}', response.text)  # 这个是带最后的秒数的
+        time.sleep(1)  # 等待一小会再提交，减少出验证码的概率
+
+        # 用电脑本地时间获取starttime
+        # 因为部分人的电脑时间和标准的北京时间差的太大了，原本的2秒交卷变成了1分钟交卷，所以放弃了这段代码
+        #a = datetime.datetime.now() + datetime.timedelta(seconds=-5)
         #b = re.sub(r'\w+[^.]$', "", str(a))
         #c = re.sub(r'\.', "", b)
         #start_time = re.sub(r'\-', "/", c)
@@ -142,8 +140,9 @@ class WenJuanXing:
         id = self.wj_id  # 获取问卷id
         jqsign = self.get_jqsign(ktimes, jqnonce)  # 生成jqsign
         start_time = self.get_start_time(response)  # 获取starttime
-        #time_stamp = '{}{}'.format(int(time.time()), random.randint(100, 200)) # 生成一个时间戳，最后三位为随机数
-        time_stamp = '{}{}'.format(int(time.time()), 000) #有资料说最后三位为毫秒，就干脆改为000了
+        # time_stamp = '{}{}'.format(int(time.time()), random.randint(100, 200)) # 生成一个时间戳，最后三位为随机数
+        time_stamp = '{}{}'.format(
+            int(time.time()), 000)  # 有资料说最后三位为毫秒，就干脆改为000了
         url = 'https://www.wjx.cn/joinnew/processjq.ashx?submittype=1&source=directphone&curID={}&t={}&starttim' \
               'e={}&ktimes={}&rn={}&hlv=1&jqnonce={}&jqsign={}'.format(
                   id, time_stamp, start_time, ktimes, rn, jqnonce, jqsign)
@@ -186,7 +185,12 @@ if __name__ == '__main__':
     # 改成自己的问卷ID
     # http://www.wjx.top/m/{这就是ID}.aspx
     w = WenJuanXing("71431917")
-    your_name = '红花会7帮主'
+    your_name = '红花会8帮主'
+    submit_data = {
+        'submitdata': '1$红花会小帮主}2$3}3$1|2}4$1}5$1}6$1^1}7$1}8$1'
+    }
+    # 要改的数据都集中在这方便修改
+
     while(w):
         r = w.run()
         if r.find("complete") >= 0:
