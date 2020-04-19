@@ -117,7 +117,7 @@ class WenJuanXing:
         #start_time = re.search(r'\d+?/\d+?/\d+?\s\d+?:\d{2}', response.text) #原来获取到的开始时间是不带最后的秒数的
         
         start_time = re.search(r'\d+?/\d+?/\d+?\s\d+?:\d{2}:\d{2}', response.text) #这个是带最后的秒数的
-        time.sleep(1)
+        time.sleep(1) # 等待一小会再提交，减少出验证码的概率
 
         #用电脑本地时间获取starttime
         #因为部分人的电脑时间和标准的北京时间差的太大了，原本的2秒交卷变成了1分钟交卷，所以放弃了这段代码
@@ -141,8 +141,8 @@ class WenJuanXing:
         id = self.wj_id  # 获取问卷id
         jqsign = self.get_jqsign(ktimes, jqnonce)  # 生成jqsign
         start_time = self.get_start_time(response)  # 获取starttime
-        #time_stamp = '{}{}'.format(int(time.time()), random.randint(100, 200))
-        time_stamp = '{}{}'.format(int(time.time()), 000)  # 生成一个时间戳，最后三位为随机数
+        #time_stamp = '{}{}'.format(int(time.time()), random.randint(100, 200)) # 生成一个时间戳，最后三位为随机数
+        time_stamp = '{}{}'.format(int(time.time()), 000) #有资料说最后三位为毫秒，就干脆改为000了
         url = 'https://www.wjx.cn/joinnew/processjq.ashx?submittype=1&source=directphone&curID={}&t={}&starttim' \
               'e={}&ktimes={}&rn={}&hlv=1&jqnonce={}&jqsign={}'.format(
                   id, time_stamp, start_time, ktimes, rn, jqnonce, jqsign)
@@ -166,9 +166,6 @@ class WenJuanXing:
         :return:
         """
         self.set_post_url()
-        print("Zzz...")
-        # 等待一会再提交，减少出验证码的概率
-        #time.sleep(random.randint(10, 20)) #这里就没必要了
         print("Go Ahead!")
         result = self.post_data()
         print(result.text)
